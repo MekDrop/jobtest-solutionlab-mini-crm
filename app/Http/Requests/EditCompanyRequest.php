@@ -24,17 +24,17 @@ class EditCompanyRequest extends FormRequest
      */
     public function rules()
     {
-        $unique_name = Rule::unique('companies');
+        $unique_name = '';
         $logo_filled = 'required';
         if (isset($this->company)) {
-            $unique_name->ignore($this->company->name);
+            $unique_name = $this->company->name;
             $logo_filled = '';
         }
 
         return [
             'name' => [
                 'required',
-                $unique_name,
+                Rule::unique('companies')->ignore($unique_name, 'name'),
                 'max:255',
                 'min:3'
             ],

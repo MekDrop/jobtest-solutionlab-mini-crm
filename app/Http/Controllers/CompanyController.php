@@ -47,10 +47,10 @@ class CompanyController extends Controller
             $file = $request->file('logo');
             $ext = $file->guessExtension();
             $filename = sha1(microtime(true)) . '.' . $ext;
-            $file->move(storage_path('public'), $filename);
+            $file->move(storage_path('app/public'), $filename);
             $company->logo = $filename;
-            Image::make(storage_path('public') . DIRECTORY_SEPARATOR . $filename)->resize(100, 100)->save(
-                storage_path('public') . DIRECTORY_SEPARATOR . 'small_' . $filename
+            Image::make(storage_path('app/public') . DIRECTORY_SEPARATOR . $filename)->resize(100, 100)->save(
+                storage_path('app/public') . DIRECTORY_SEPARATOR . 'small_' . $filename
             );
         }
         $company->saveOrFail();
@@ -93,17 +93,17 @@ class CompanyController extends Controller
         if ($request->hasFile('logo')) {
             if ($company->logo) {
                 File::delete([
-                    storage_path('public') . DIRECTORY_SEPARATOR . $company->logo,
-                    storage_path('public') . DIRECTORY_SEPARATOR . 'small_' . $company->logo
+                    storage_path('app/public') . DIRECTORY_SEPARATOR . $company->logo,
+                    storage_path('app/public') . DIRECTORY_SEPARATOR . 'small_' . $company->logo
                 ]);
             }
             $file = $request->file('logo');
             $ext = $file->guessExtension();
             $filename = sha1(microtime(true)) . '.' . $ext;
-            $file->move(storage_path('public'), $filename);
+            $file->move(storage_path('app/public'), $filename);
             $company->logo = $filename;
-            Image::make(storage_path('public') . DIRECTORY_SEPARATOR . $filename)->resize(100, 100)->save(
-                storage_path('public') . DIRECTORY_SEPARATOR . 'small_' . $filename
+            Image::make(storage_path('app/public') . DIRECTORY_SEPARATOR . $filename)->resize(100, 100)->save(
+                storage_path('app/public') . DIRECTORY_SEPARATOR . 'small_' . $filename
             );
         }
         $company->saveOrFail();
@@ -121,8 +121,8 @@ class CompanyController extends Controller
         $file = $company->logo;
         $company->delete();
         File::delete([
-            storage_path('public') . DIRECTORY_SEPARATOR . $file,
-            storage_path('public') . DIRECTORY_SEPARATOR . 'small_'  . $file
+            storage_path('app/public') . DIRECTORY_SEPARATOR . $file,
+            storage_path('app/public') . DIRECTORY_SEPARATOR . 'small_'  . $file
         ]);
         return \Redirect::route('company.index')->with('success', 'Deleted!');
     }
